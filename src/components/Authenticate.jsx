@@ -7,12 +7,19 @@ export default function Authenticate({ token }) {
   const [username, setUsername] = useState('');
   const [usernameError, setUsernameError] = useState('');
 
-  async function handleClick() {
-    try {
-      if (!validateUsername(username)) {
-        return;
-      }
+  async function handleClick(event) {
+    event.preventDefault();
 
+    if (!token) {
+      setError('Please sign up first!');
+      return;
+    }
+
+    if (!validateUsername(username)) {
+      return;
+    }
+
+    try {
       const response = await fetch(
         'https://fsa-jwt-practice.herokuapp.com/authenticate',
         {
@@ -24,11 +31,11 @@ export default function Authenticate({ token }) {
         }
       );
 
+      const result = await response.json();
       if (!response.ok) {
-        throw new Error('Failed to authenticate token');
+        throw new Error('Failed to authenticate');
       }
 
-      const result = await response.json();
       setSuccessMessage(result.message);
       if (result.data && result.data.username) {
         setUsername(result.data.username);
@@ -41,8 +48,8 @@ export default function Authenticate({ token }) {
   }
 
   function validateUsername(username) {
-    if (username.length !== 8) {
-      setUsernameError('Username must be 8 characters long');
+    if (username.length < 8) {
+      setUsernameError('Username must be 8 characters long!');
       return false;
     } else {
       setUsernameError('');
