@@ -47,6 +47,16 @@ export default function Authenticate({ token }) {
     }
   }
 
+  function validateUsername(username) {
+    if (username.length < 8) {
+      setUsernameError('Cannot Authenticate');
+      return false;
+    } else {
+      setUsernameError('');
+      return true;
+    }
+  }
+
   function handleUsernameChange(event) {
     setUsername(event.target.value);
     setUsernameError('');
