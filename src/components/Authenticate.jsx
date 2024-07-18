@@ -47,16 +47,6 @@ export default function Authenticate({ token }) {
     }
   }
 
-  function validateUsername(username) {
-    if (username.length < 8) {
-      setUsernameError('Username must be 8 characters long!');
-      return false;
-    } else {
-      setUsernameError('');
-      return true;
-    }
-  }
-
   function handleUsernameChange(event) {
     setUsername(event.target.value);
     setUsernameError('');
